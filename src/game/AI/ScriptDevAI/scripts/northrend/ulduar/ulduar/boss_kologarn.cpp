@@ -159,6 +159,7 @@ struct boss_kologarnAI : public Scripted_NoMovementAI
         DoScriptText(SAY_DEATH, m_creature);
         DoCastSpellIfCan(m_creature, SPELL_INSTAKILL_KOLOGARN_ARM, CAST_TRIGGERED);
         DoCastSpellIfCan(m_creature, SPELL_INSTAKILL_KOLOGARN_ARM, CAST_TRIGGERED);
+        m_creature->GetMap()->ChangeGOPathfinding(194232, 8546, true);
     }
 
     void KilledUnit(Unit* pVictim) override

@@ -953,20 +953,14 @@ struct ColiseumFloor : public GameObjectAI
 
     void JustSpawned() override
     {
-        m_go->GetMap()->SetNavTile(30, 31, 1);
-        m_go->GetMap()->SetNavTile(30, 30, 1);
-        m_go->GetMap()->SetNavTile(31, 31, 1);
-        m_go->GetMap()->SetNavTile(31, 30, 1);
+        m_go->GetMap()->ChangeGOPathfinding(195527, 9059, true);
     }
 
     void OnGoStateChange(GOState state) override
     {
         if (state == GO_STATE_ACTIVE)
         {
-            m_go->GetMap()->SetNavTile(30, 31, 0);
-            m_go->GetMap()->SetNavTile(30, 30, 0);
-            m_go->GetMap()->SetNavTile(31, 31, 0);
-            m_go->GetMap()->SetNavTile(31, 30, 0);
+            m_go->GetMap()->ChangeGOPathfinding(195527, 9059, false);
         }
     }
 };

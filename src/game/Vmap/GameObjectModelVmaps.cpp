@@ -69,24 +69,12 @@ std::tuple<std::vector<TileBuilding const*>, std::map<uint32, std::vector<TileBu
         uint32 i = 0;
         for (TileBuilding& data : itr->second)
         {
-            G3D::Matrix3 iRotation = G3D::Matrix3::fromEulerAnglesZYX(data.ori, 0, 0);
-            G3D::Vector3 pos(data.x, data.y, data.z);
             ModelList::const_iterator itr = modelList.find(data.displayId);
             if (itr == modelList.end())
                 continue;
-            G3D::AABox mdl_box = itr->second.bound;
-            // transform bounding box:
-            mdl_box = G3D::AABox(mdl_box.low() * 1, mdl_box.high() * 1);
-            G3D::AABox rotated_bounds;
-            for (uint32 i = 0; i < 8; ++i)
-                rotated_bounds.merge(iRotation * mdl_box.corner(i));
 
-            G3D::AABox bounds = rotated_bounds + pos;
-
-            uint32 lowX = 32 - bounds.high().y / GRID_SIZE;
-            uint32 lowY = 32 - bounds.high().x / GRID_SIZE;
-            uint32 highX = 32 - bounds.low().y / GRID_SIZE;
-            uint32 highY = 32 - bounds.low().x / GRID_SIZE;
+            uint32 lowX, lowY, highX, highY;
+            std::tie(lowX, lowY, highX, highY) = CalculateBuildingTiles(data, itr->second.bound);
 
             if (lowX <= tileX && lowY <= tileY && highX >= tileX && highY >= tileY)
             {
@@ -115,4 +103,23 @@ std::tuple<std::vector<TileBuilding const*>, std::map<uint32, std::vector<TileBu
     }
 
     return { buildingsByDefault, buildingsInTile, buildingsByGroup, flagToGroup };
+}
+
+std::tuple<uint32, uint32, uint32, uint32> CalculateBuildingTiles(TileBuilding const& building, G3D::AABox mdl_box)
+{
+    G3D::Matrix3 iRotation = G3D::Matrix3::fromEulerAnglesZYX(building.ori, 0, 0);
+    G3D::Vector3 pos(building.x, building.y, building.z);
+    // transform bounding box:
+    mdl_box = G3D::AABox(mdl_box.low() * 1, mdl_box.high() * 1);
+    G3D::AABox rotated_bounds;
+    for (uint32 i = 0; i < 8; ++i)
+        rotated_bounds.merge(iRotation * mdl_box.corner(i));
+
+    G3D::AABox bounds = rotated_bounds + pos;
+
+    uint32 lowX = 32 - bounds.high().y / GRID_SIZE;
+    uint32 lowY = 32 - bounds.high().x / GRID_SIZE;
+    uint32 highX = 32 - bounds.low().y / GRID_SIZE;
+    uint32 highY = 32 - bounds.low().x / GRID_SIZE;
+    return std::tuple<uint32, uint32, uint32, uint32>();
 }

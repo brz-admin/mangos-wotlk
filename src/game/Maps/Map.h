@@ -400,6 +400,7 @@ class Map : public GridRefManager<NGridType>
         std::set<ObjectGuid> m_objRemoveList; // this will eventually eat up too much memory - only used for debugging VisibleNotifier::Notify() customlog leak
 
         void SetNavTile(uint32 tileX, uint32 tileY, uint32 tileNumber);
+        void ChangeGOPathfinding(uint32 entry, uint32 displayId, bool apply);
 
     private:
         void LoadMapAndVMap(int gx, int gy);
@@ -525,6 +526,8 @@ class Map : public GridRefManager<NGridType>
         uint32 i_defaultLight;
 
         TimePoint m_dynamicDifficultyCooldown;
+
+        std::map<std::pair<uint32, uint32>, uint32> m_tileNumberPerTile;
 };
 
 class WorldMap : public Map

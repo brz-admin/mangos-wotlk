@@ -67,5 +67,7 @@ class GameObjectModel
         bool Relocate(GameObject const& go);
 
         static void LoadGOVmapModels();
+        static std::vector<std::pair<uint32, uint32>> GetTilesForGOEntry(uint32 mapId, uint32 goEntry);
+        static std::pair<bool, uint32> GetTileDataForGoDisplayId(uint32 mapId, uint32 goEntry, uint32 displayId, uint32 tileX, uint32 tileY);
 };
 #endif

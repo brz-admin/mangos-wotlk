@@ -44,5 +44,6 @@ typedef std::unordered_map<uint32, GameobjectModelData> ModelList;
 
 extern ModelList LoadGameObjectModelList(std::string fileName);
 extern std::tuple<std::vector<TileBuilding const*>, std::map<uint32, std::vector<TileBuilding const*>>, std::map<uint32, std::vector<TileBuilding const*>>, std::map<uint32, uint32>> GetTileBuildingData(uint32 mapId, uint32 tileX, uint32 tileY, ModelList& modelList);
+extern std::tuple<uint32, uint32, uint32, uint32> CalculateBuildingTiles(TileBuilding const& building, G3D::AABox mdl_box);
 
 #endif

@@ -41,6 +41,7 @@
 #include "Chat/Chat.h"
 #include "Weather/Weather.h"
 #include "Grids/ObjectGridLoader.h"
+#include "Vmap/GameObjectModel.h"
 
 #ifdef BUILD_METRICS
  #include "Metric/Metric.h"
@@ -146,6 +147,28 @@ void Map::SetNavTile(uint32 tileX, uint32 tileY, uint32 tileNumber)
 {
     MMAP::MMapManager* mmap = MMAP::MMapFactory::createOrGetMMapManager();
     mmap->ChangeTile(GetId(), GetInstanceId(), tileX, tileY, tileNumber);
+}
+
+void Map::ChangeGOPathfinding(uint32 entry, uint32 displayId, bool apply)
+{
+    auto tileIds = GameObjectModel::GetTilesForGOEntry(GetId(), entry);
+    MMAP::MMapManager* mmap = MMAP::MMapFactory::createOrGetMMapManager();
+    for (auto dataXY : tileIds)
+    {
+        uint32 tileX = dataXY.first;
+        uint32 tileY = dataXY.second;
+        uint32 tileNumber; bool isFlag;
+        std::tie(isFlag, tileNumber) = GameObjectModel::GetTileDataForGoDisplayId(GetId(), entry, displayId, tileX, tileY);
+        if (!isFlag)
+            mmap->ChangeTile(GetId(), GetInstanceId(), tileX, tileY, apply ? tileNumber : 0);
+        else
+        {
+            uint32 currentTileNumber = m_tileNumberPerTile[dataXY];
+            tileNumber = apply ? (currentTileNumber | tileNumber) : (currentTileNumber & ~tileNumber);
+            mmap->ChangeTile(GetId(), GetInstanceId(), tileX, tileY, tileNumber);
+        }
+        m_tileNumberPerTile[dataXY] = tileNumber;
+    }
 }
 
 void Map::LoadMapAndVMap(int gx, int gy)
