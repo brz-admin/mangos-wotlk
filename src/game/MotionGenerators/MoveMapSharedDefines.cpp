@@ -61,8 +61,8 @@ namespace MMAP
 
             for (auto& vertex : tempVertices)
             {
-                vertex.x = -vertex.x;
-                vertex.y = -vertex.y;
+                vertex.x = vertex.x;
+                vertex.y = vertex.y;
                 vertex = (vertex * matrix) + pos;
             }
 
