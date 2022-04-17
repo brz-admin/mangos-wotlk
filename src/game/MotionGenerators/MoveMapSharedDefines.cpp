@@ -44,8 +44,7 @@ namespace MMAP
         m.getGroupModels(groupModels);
 
         // all M2s need to have triangle indices reversed
-        // bool isM2 = modelName.find(".m2") != modelName.npos || modelName.find(".M2") != modelName.npos;
-        bool isM2 = false;
+        bool isM2 = building->modelName.find(".m2") != building->modelName.npos || building->modelName.find(".M2") != building->modelName.npos;
 
         G3D::Vector3 pos(building->x, building->y, building->z);
         G3D::Quat rot(0, 0, sin(building->ori / 2), cos(building->ori / 2));
@@ -61,8 +60,11 @@ namespace MMAP
 
             for (auto& vertex : tempVertices)
             {
-                vertex.x = vertex.x;
-                vertex.y = vertex.y;
+                if (!isM2)
+                {
+                    vertex.x = -vertex.x;
+                    vertex.y = -vertex.y;
+                }
                 vertex = (vertex * matrix) + pos;
             }
 
