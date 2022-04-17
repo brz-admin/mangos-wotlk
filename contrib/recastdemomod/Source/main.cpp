@@ -173,7 +173,8 @@ int main(int argc, char** argv)
         SDL_Quit();
         return -1;
     }
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
 
     float fogCol[4] = { 0.32f, 0.31f, 0.30f, 1.0f };
     /*glEnable(GL_FOG);
