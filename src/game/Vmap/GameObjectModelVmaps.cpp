@@ -121,5 +121,5 @@ std::tuple<uint32, uint32, uint32, uint32> CalculateBuildingTiles(TileBuilding c
     uint32 lowY = 32 - bounds.high().x / GRID_SIZE;
     uint32 highX = 32 - bounds.low().y / GRID_SIZE;
     uint32 highY = 32 - bounds.low().x / GRID_SIZE;
-    return std::tuple<uint32, uint32, uint32, uint32>();
+    return { lowX, lowY, highX, highY };
 }
