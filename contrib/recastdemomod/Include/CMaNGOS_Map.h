@@ -200,6 +200,7 @@ protected:
     string m_TileButtonStr;
     string m_transportButtonStr;
     bool m_GeomChanged;
+    bool m_switchingTileVersion;
 
     BuildContext* m_ctx;
     class dtNavMesh* m_navMesh;

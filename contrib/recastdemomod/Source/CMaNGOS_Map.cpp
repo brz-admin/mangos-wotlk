@@ -238,6 +238,7 @@ m_DrawVMapMesh(true),
 m_DrawMapMesh(true),
 m_showLevel(SHOW_LEVEL_NONE),
 m_GeomChanged(false),
+m_switchingTileVersion(false),
 m_tool(NULL),
 m_SelectedTile(NULL),
 m_currentAlternate(-1)
@@ -548,11 +549,13 @@ bool CMaNGOS_Map::ShowAlternativeLevel(int height, int width)
             if (tx >= 0 && ty >= 0)
             {
                 m_MapInfos->RemoveTile(tx, ty);
+                m_switchingTileVersion = true;
                 if (LoadTileData(tx, ty, tId))
                 {
                     m_currentAlternate = i;
                     m_showLevel = SHOW_LEVEL_NONE;
                 }
+                m_switchingTileVersion = false;
             }
 
 //             if (!m_MapInfos->IsEmpty())
@@ -1332,7 +1335,8 @@ bool CMaNGOS_Map::LoadTileData(unsigned int tx, unsigned int ty, unsigned int ti
             rcVcopy(m_GridBMin, m_MapInfos->BMin());
             m_GridBMin[0] -= RecastDemo::BLOCK_SIZE + border;
             m_GridBMin[2] -= RecastDemo::BLOCK_SIZE + border;
-            m_GeomChanged = true;
+            if (!m_switchingTileVersion)
+                m_GeomChanged = true;
         }
         return true;
     }
