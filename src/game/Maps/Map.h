@@ -399,8 +399,16 @@ class Map : public GridRefManager<NGridType>
         // debug
         std::set<ObjectGuid> m_objRemoveList; // this will eventually eat up too much memory - only used for debugging VisibleNotifier::Notify() customlog leak
 
-        void SetNavTile(uint32 tileX, uint32 tileY, uint32 tileNumber);
+        /* 
+         * Loads existing precomputed tiles that are defined in BuildingMap in MoveMapSharedDefines.h
+         * Currently only contains EoE, Ulduar - Kologarn, ToC and ICC - LK GOs.
+         * TODO: Add usage in ICC - LK (GOs are already added)
+         * TODO: Add buildings in rest of Ulduar, SotA, IoC and WG
+         * TODO: Add support of runtime building of mmaps
+         */
         void ChangeGOPathfinding(uint32 entry, uint32 displayId, bool apply);
+        // Only loads one tile in one location - for testing only - also uses existing precomputed tiles
+        void SetNavTile(uint32 tileX, uint32 tileY, uint32 tileNumber);
 
     private:
         void LoadMapAndVMap(int gx, int gy);
