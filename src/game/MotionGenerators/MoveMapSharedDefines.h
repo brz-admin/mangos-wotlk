@@ -81,6 +81,7 @@ struct TileBuilding
 };
 
 typedef std::map<uint32, std::vector<TileBuilding>> TileBuildings;
+// Map containing pathfindable GOs all over the world. After adding entry, need to rebuild mmaps and add their usage through Map::ChangeGOPathfinding
 static TileBuildings BuildingMap =
 {
     {649u, {TileBuilding(std::string("Coliseum_Intact_Floor.wmo.vmo"), 563.53472900390625, 177.3090362548828125, 398.5718994140625, 3.14159265358979323846 / 2, 0, 0, 0, 0, 9059, false, false, 01, 195527)}},
