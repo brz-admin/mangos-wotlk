@@ -91,6 +91,7 @@ namespace MMAP
                        bool skipJunkMaps        = true,
                        bool skipBattlegrounds   = false,
                        bool debug               = false,
+                       bool buildAlternate      = true,
                        const char* offMeshFilePath = NULL,
                        const char* workdir = NULL);
 
@@ -146,6 +147,7 @@ namespace MMAP
             bool m_skipContinents;
             bool m_skipJunkMaps;
             bool m_skipBattlegrounds;
+            bool m_buildAlternate;
 
             json m_config;
 

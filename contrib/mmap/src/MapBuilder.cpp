@@ -75,12 +75,13 @@ namespace MMAP
     }
 
     MapBuilder::MapBuilder(const char* configInputPath, int threads, bool skipLiquid, bool skipContinents, bool skipJunkMaps,
-                           bool skipBattlegrounds, bool debug, const char* offMeshFilePath, const char* workdir) :
+                           bool skipBattlegrounds, bool debug, bool buildAlternate, const char* offMeshFilePath, const char* workdir) :
         m_taskQueue(new TaskQueue(this, threads)),
         m_debug(debug),
         m_skipContinents(skipContinents),
         m_skipJunkMaps(skipJunkMaps),
         m_skipBattlegrounds(skipBattlegrounds),
+        m_buildAlternate(buildAlternate),
         m_offMeshFilePath(offMeshFilePath),
         m_workdir(workdir)
     {
@@ -694,6 +695,10 @@ namespace MMAP
         std::map<uint32, uint32> flagToGroup;
 
         std::tie(buildingsByDefault, buildingsInTile, buildingsByGroup, flagToGroup) = GetTileBuildingData(mapID, tileX, tileY, m_modelList);
+
+        // only builds tiles with possible alternates - GOs in them
+        if (m_buildAlternate && buildingsByDefault.empty() && buildingsInTile.empty() && buildingsByGroup.empty())
+            return;
 
         // some buildings are by default like icc platform
         for (TileBuilding const* building : buildingsByDefault)
